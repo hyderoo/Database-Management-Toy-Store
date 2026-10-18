@@ -40,10 +40,10 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`customer_id`, `customer_name`, `email`, `phone`, `deleted`) VALUES
-(1, 'Muhammad Haidar', 'haidar@gmail.com', '083169415274', NULL),
-(2, 'Hafiz Hamdani', 'hafiz@gmail.com', '083169415276', NULL),
-(3, 'Radithya Fawwaz', 'Radit@gmail.com', '08139746049', NULL),
-(4, 'Dimas Victo', 'Dimas@gmail.com', '08139746046', NULL);
+(1, 'Andi Pratama', 'andi@example.com', '08000000001', NULL),
+(2, 'Sari Wulandari', 'sari@example.com', '08000000002', NULL),
+(3, 'Budi Santoso', 'budi@example.com', '08000000003', NULL),
+(4, 'Rina Kusuma', 'rina@example.com', '08000000004', NULL);
 
 -- --------------------------------------------------------
 
@@ -64,9 +64,9 @@ CREATE TABLE `supplier` (
 --
 
 INSERT INTO `supplier` (`supplier_id`, `supplier_name`, `contact_info`, `alamat`, `deleted`) VALUES
-(1, 'Toy Emporium', '083132413322', 'Banjarmasin', NULL),
-(2, 'Playful Creations Co.', '083231233214', 'Padang', NULL),
-(3, 'Pusat Mainan Tradisional', '081324435223', 'Bandung', NULL);
+(1, 'Toy Emporium', '08000000011', 'Banjarmasin', NULL),
+(2, 'Playful Creations Co.', '08000000012', 'Padang', NULL),
+(3, 'Pusat Mainan Tradisional', '08000000013', 'Bandung', NULL);
 
 -- --------------------------------------------------------
 
