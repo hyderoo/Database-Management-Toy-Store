@@ -1,67 +1,61 @@
-## Tugas Akhir Praktikum SBD Kelompok 20
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Database Management - Toy Store
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![tests](https://github.com/hyderoo/Database-Management-Toy-Store/actions/workflows/tests.yml/badge.svg)](https://github.com/hyderoo/Database-Management-Toy-Store/actions/workflows/tests.yml)
 
-## About Laravel
+Toy store database management app - final practicum project for the Database
+Systems course (SBD), group 20. Laravel 10 admin panel for managing toys,
+customers, suppliers and transactions, on MySQL/MariaDB.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+> Coursework project (2023). Kept public as a record of study; it is not a
+> production app - see "Known limitations" below.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- CRUD for toys, customers and suppliers, plus transaction records linking
+  all three
+- Keyword search per entity
+- Soft delete with restore and a trash view, alongside permanent delete
+- Session login screen
+- Feature test suite covering the domain flows (see `tests/Feature/ToyStoreTest.php`),
+  running in CI against a real MySQL with the original schema and seed data
 
-## Learning Laravel
+## Tech
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Laravel 10, PHP 8.1+, MySQL/MariaDB, Blade, Vite/Tailwind for assets.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Run it locally
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+composer install
+cp .env.example .env   # or copy .env.ci and adjust credentials
+php artisan key:generate
 
-## Laravel Sponsors
+# create the database, then load the original schema + seed data:
+mysql -u root -p toystore < dbtoystorekel20.sql
+php artisan migrate     # auth scaffolding tables (users, tokens)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+php artisan serve
+```
 
-### Premium Partners
+## Tests
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```bash
+php artisan test
+```
 
-## Contributing
+The CI workflow spins up MySQL 8, imports `dbtoystorekel20.sql`, runs the
+framework migrations and then the full suite. Tests use database transactions
+so seed data stays intact.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Known limitations (honest list, coursework)
 
-## Code of Conduct
+- The CRUD routes are only behind the `web` middleware - they are reachable
+  without logging in. The login screen exists but does not gate the admin
+  pages.
+- Controllers mix raw SQL with the query builder; model classes exist but the
+  controllers mostly bypass them.
+- IDs are supplied by the user in forms instead of auto-increment.
+- `update` handlers match the row on the posted `id` field, not the URL id.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+These are left as-is to keep the submitted coursework intact; the test suite
+documents the actual behavior.
