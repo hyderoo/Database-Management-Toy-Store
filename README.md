@@ -56,6 +56,11 @@ so seed data stays intact.
   controllers mostly bypass them.
 - IDs are supplied by the user in forms instead of auto-increment.
 - `update` handlers match the row on the posted `id` field, not the URL id.
+- `toy/delete/{id}` and `customer/delete/{id}` are registered twice in
+  `routes/web.php`; the later (soft-delete) registration wins, so "Delete" is
+  actually a soft delete. Permanent removal lives under the trash flow.
+- Blade view directories were committed as `Dashboard/` (capital D), which
+  500s on case-sensitive filesystems (Linux); fixed to lowercase.
 
 These are left as-is to keep the submitted coursework intact; the test suite
 documents the actual behavior.

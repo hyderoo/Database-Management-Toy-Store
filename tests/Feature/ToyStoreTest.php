@@ -85,10 +85,15 @@ class ToyStoreTest extends TestCase
         $this->assertDatabaseHas('toy', ['toy_id' => 913, 'toy_name' => 'New Name', 'price' => 9900]);
     }
 
-    public function test_toy_delete_removes_the_row(): void
+    public function test_toy_delete_soft_deletes_then_trash_delete_removes(): void
     {
         $this->makeToy(914, 'Doomed Toy');
-        $response = $this->post('/toy/delete/914');
+        // routes/web.php registers toy/delete/{id} twice; the later registration
+        // (softdelete) wins, so the Delete action soft-deletes.
+        $this->post('/toy/delete/914')->assertRedirect(route('toy.index'));
+        $this->assertDatabaseMissing('toy', ['toy_id' => 914, 'deleted' => null]);
+        // permanent removal lives under the trash flow:
+        $this->post('/toy/restore/delete/914');
         $this->assertDatabaseMissing('toy', ['toy_id' => 914]);
     }
 
